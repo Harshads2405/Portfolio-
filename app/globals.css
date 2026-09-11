@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: dark; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: #05070d;
+  color: #e8eef9;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+::selection { background: rgba(94,168,255,.35); color: white; }
+
+.container-wide {
+  width: min(1180px, calc(100% - 40px));
+  margin-inline: auto;
+}
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(94,168,255,.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(94,168,255,.045) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+.glow {
+  box-shadow: 0 0 80px rgba(94,168,255,.11), 0 0 35px rgba(155,124,255,.08);
+}
+.text-gradient {
+  background: linear-gradient(100deg, #f5f8ff 15%, #72b4ff 50%, #a889ff 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.card {
+  border: 1px solid rgba(120,150,190,.15);
+  background: linear-gradient(145deg, rgba(14,22,38,.92), rgba(7,12,22,.86));
+  backdrop-filter: blur(14px);
+}
+.card:hover {
+  border-color: rgba(94,168,255,.38);
+  transform: translateY(-3px);
+}
+section { scroll-margin-top: 90px; }
