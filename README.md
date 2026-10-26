@@ -30,9 +30,23 @@ npm start
 
 ## Customize
 
-Main content is in:
-- `components/Portfolio.tsx`
-- `app/globals.css`
+Add or edit skills and projects in [`data/portfolio.ts`](data/portfolio.ts). Both sections use a responsive data-driven card grid, so adding entries does not require changing CSS or component markup.
+
+Example project:
+
+```ts
+{
+  title: "My Project",
+  tag: "Web App",
+  description: "A concise description of what it does.",
+  stack: ["Next.js", "TypeScript"],
+  icon: "code", // search, brain, layers, code, database, or globe
+  href: "https://github.com/your-name/project",
+  linkLabel: "View repository"
+}
+```
+
+Styles remain in `app/globals.css`; page layout is in `components/Portfolio.tsx`.
 
 Assets:
 - `public/profile.jpg`

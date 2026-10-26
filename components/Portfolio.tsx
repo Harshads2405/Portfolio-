@@ -2,46 +2,22 @@
 
 import Image from "next/image";
 import {
-  ArrowDownRight, ArrowUpRight, BriefcaseBusiness, CheckCircle2, ChevronRight,
+  ArrowDownRight, ArrowUpRight, CheckCircle2, ChevronRight,
   Code2, Database, Download, ExternalLink, Github, Globe2, GraduationCap,
-  Linkedin, Mail, MapPin, Menu, MessageSquare, Phone, Search, Server,
-  Sparkles, Terminal, X, BrainCircuit, Layers3, FileText
+  Linkedin, Mail, MapPin, Menu, Phone, Search, Terminal, X, BrainCircuit, Layers3, FileText,
+  type LucideIcon
 } from "lucide-react";
 import { useState } from "react";
+import { projects, skills, type Project, type ProjectIcon } from "@/data/portfolio";
 
-const skills = [
-  ["Python", "Programming"], ["Django", "Backend"], ["Django REST", "APIs"],
-  ["FastAPI", "Backend"], ["Flask", "Backend"], ["Vue.js", "Frontend"],
-  ["React", "Frontend"], ["Next.js", "Frontend"], ["PostgreSQL", "Database"],
-  ["MySQL", "Database"], ["LLMs", "AI"], ["Groq AI", "AI"],
-  ["OpenAI API", "AI"], ["NLP", "AI"], ["RAG", "AI"], ["Prompt Engineering", "AI"],
-  ["REST APIs", "Architecture"], ["Git / GitHub", "Tools"], ["Docker", "DevOps"],
-  ["Supabase", "Cloud"]
-];
-
-const projects = [
-  {
-    title: "AI Resume Analyzer",
-    tag: "AI • SaaS",
-    description: "AI-powered resume analysis and career optimization platform with ATS scoring, resume parsing, keyword-gap detection and personalized coaching.",
-    stack: ["Next.js", "React", "Supabase", "Groq AI"],
-    icon: Search
-  },
-  {
-    title: "AI Assistant Doctor",
-    tag: "Healthcare AI",
-    description: "Disease prediction and decision-support system using supervised machine learning, symptom analysis, a Flask API and patient-oriented recommendations.",
-    stack: ["Python", "Flask", "ML", "MySQL"],
-    icon: BrainCircuit
-  },
-  {
-    title: "Enterprise Immigration Platform",
-    tag: "Production",
-    description: "Scalable enterprise case-management backend with dynamic questionnaires, conditional branching, ERI/PERI mapping and configurable business rules.",
-    stack: ["Django", "DRF", "Vue.js", "PostgreSQL"],
-    icon: Layers3
-  }
-];
+const projectIcons: Record<ProjectIcon, LucideIcon> = {
+  search: Search,
+  brain: BrainCircuit,
+  layers: Layers3,
+  code: Code2,
+  database: Database,
+  globe: Globe2
+};
 
 const experience = [
   {
@@ -191,7 +167,7 @@ export default function Portfolio() {
             <span className="hidden font-mono text-xs text-slate-600 sm:block">BUILD / SHIP / IMPROVE</span>
           </div>
           <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-            {skills.map(([name, category]) => (
+            {skills.map(({ name, category }) => (
               <div key={name} className="card rounded-xl p-4 transition duration-300">
                 <div className="mb-3 flex h-8 w-8 items-center justify-center rounded-lg bg-blue-400/10 text-blue-300">
                   {category === "AI" ? <BrainCircuit size={17}/> : category === "Database" ? <Database size={17}/> : category === "Frontend" ? <Globe2 size={17}/> : <Code2 size={17}/>}
@@ -208,7 +184,7 @@ export default function Portfolio() {
         <SectionKicker>FEATURED WORK</SectionKicker>
         <div className="mt-3 flex items-end justify-between">
           <h2 className="text-3xl font-bold sm:text-4xl">Things I&apos;ve built</h2>
-          <span className="font-mono text-xs text-blue-400">03 / SELECTED</span>
+          <span className="font-mono text-xs text-blue-400">{String(projects.length).padStart(2, "0")} / SELECTED</span>
         </div>
         <div className="mt-10 grid gap-5 lg:grid-cols-3">
           {projects.map((p, i) => <ProjectCard key={p.title} {...p} index={i+1}/>)}
@@ -343,7 +319,9 @@ function SectionKicker({children}: {children: React.ReactNode}) {
 function MiniCard({icon: Icon, title, text}: {icon: any; title: string; text: string}) {
   return <div className="card rounded-2xl p-5 transition duration-300"><div className="mb-5 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500/15 to-violet-500/15 text-blue-300"><Icon size={19}/></div><h3 className="font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-slate-500">{text}</p></div>
 }
-function ProjectCard({title, tag, description, stack, icon: Icon, index}: any) {
+function ProjectCard({title, tag, description, stack, icon = "code", href, linkLabel = "Case study", index}: Project & {index: number}) {
+  const Icon = projectIcons[icon];
+  const action = <div className="mt-6 flex items-center justify-between border-t border-white/5 pt-4 text-xs font-semibold text-blue-300">{linkLabel} <ExternalLink size={14}/></div>;
   return <article className="card group rounded-2xl p-5 transition duration-300">
     <div className="flex items-start justify-between">
       <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500/20 to-violet-500/20 text-blue-300"><Icon size={23}/></div>
@@ -353,7 +331,7 @@ function ProjectCard({title, tag, description, stack, icon: Icon, index}: any) {
     <h3 className="mt-2 text-xl font-bold">{title}</h3>
     <p className="mt-3 min-h-[108px] text-sm leading-6 text-slate-500">{description}</p>
     <div className="mt-5 flex flex-wrap gap-2">{stack.map((s:string)=><span key={s} className="rounded-md border border-white/8 bg-white/[.03] px-2.5 py-1 text-[11px] text-slate-400">{s}</span>)}</div>
-    <div className="mt-6 flex items-center justify-between border-t border-white/5 pt-4 text-xs font-semibold text-blue-300">Case study <ExternalLink size={14}/></div>
+    {href ? <a href={href} target="_blank" rel="noreferrer" aria-label={`${linkLabel}: ${title}`} className="block">{action}</a> : action}
   </article>
 }
 function Info({label, value}: {label: string; value: string}) {
